@@ -13,4 +13,4 @@ while True:
 	img.save(directory+img_name+str(i)+img_type)
 	i = i+1
 	break #take out to continually take and save images
-
+#testing testing
