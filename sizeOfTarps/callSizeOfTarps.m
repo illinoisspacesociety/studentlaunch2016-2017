@@ -43,5 +43,4 @@ ylabel('Altitude [ft]')
 legend('Contours of Tarp Size in Pixels','10 MPH Wind Trajectory','20 MPH Wind Trajectory')
 % title('Estimated Number of Pixels Occupied by Tarp')
 set(gca,'FontSize',16)
-
-
+%testing github
