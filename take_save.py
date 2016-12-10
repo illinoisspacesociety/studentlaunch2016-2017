@@ -3,7 +3,7 @@
 from SimpleCV import *
 import time
 
-directory = "/home/asa/Documents/StudentLaunch/" #define save directory
+directory = "/home/pi/images/" #define save directory
 img_name = "test_image_" #define image file name
 img_type = ".png" #define image file type
 
