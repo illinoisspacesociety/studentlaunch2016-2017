@@ -38,27 +38,37 @@ LogOfLargestInRow = log(LargestInRow);
 %the subplot function is used to generate two separate plots in the same
 %figure: the first being the rocket's ascent and the second the decent
 
-figure
+hFig = figure(1)
 
 %ascent subplot
 %the number 382 is position in Altitudes where the max altitude is
-subplot(2,1,1);
-plot(Altitudes(1:382), LogOfSmallestInRow(1:382), 'g')
+subplot(1,2,1);
+plot(Altitudes(1:382), LargestInRow(1:382), 'b','linewidth',2)
 hold on
-plot(Altitudes(1:382), LogOfLargestInRow(1:382), 'm')
+plot(Altitudes(1:382), SmallestInRow(1:382), 'g','linewidth',2)
 
-title('log(Pixel Size of Tarp) versus Altitude (ascent)');
+set(gca,'yscale','log')
+
+title('Ascent');
 xlabel('Altitude [ft]')
-ylabel('log(Pixel Size of Tarp)')
-legend('smallest pixel size at a given altitude','largest pixel size at a given altitude')
-
+ylabel('Size of Tarp in Image [Pixels]')
+legend('Maximum Tarp Size','Minimum Tarp Size')
+set(gca,'fontsize',14)
+axis([0 5400 10^2 10^8])
 %decent subplot
-subplot(2,1,2);
-plot(Altitudes(382:length(Altitudes)), LogOfSmallestInRow(382:length(LogOfSmallestInRow)), 'r')
-hold on
-plot(Altitudes(382:length(Altitudes)), LogOfLargestInRow(382:length(LogOfLargestInRow)), 'b')
+subplot(1,2,2);
 
-title('log(Pixel Size of Tarp) versus Altitude (decent)');
+plot(Altitudes(382:length(Altitudes)), LargestInRow(382:length(LargestInRow)), 'b','linewidth',2)
+hold on
+plot(Altitudes(382:length(Altitudes)), SmallestInRow(382:length(SmallestInRow)), 'g','linewidth',2)
+
+title('Descent');
 xlabel('Altitude [ft]')
-ylabel('log(Pixel Size of Tarp)')
-legend('smallest pixel size at a given altitude','largest pixel size at a given altitude')
+ylabel('Size of Tarp in Image [Pixels]')
+legend('Maximum Tarp Size','Minimum Tarp Size')
+set(gca,'fontsize',14)
+set(gca,'yscale','log')
+set(gca, 'xdir','reverse')
+axis([0 5400 10^2 10^8])
+set(gcf,'units','inches')
+set(hFig,'Position',[2 1 9.5 5])
