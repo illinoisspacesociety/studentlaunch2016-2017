@@ -8,6 +8,7 @@ import time
 # Constants
 WIDTH = 0
 HEIGHT = 0
+RECT_TOLERANCE = 0.5
 DIRECTORY = "/home/asa/Documents/StudentLaunch/studentlaunch2016-2017/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
@@ -19,7 +20,7 @@ def main():
 	while(1):
 		img = capture_image(cam)
 		size = get_size()
-		find_blobs(img)
+		rects = find_rects(img)
 		if(check_success()):
 			save_image(img)
 			print "Success\n"
@@ -35,15 +36,13 @@ def get_size():
 	##TODO: write function
 	return 0
 	
-# Function to find blobs in given image
-def find_blobs(img):
+# Function to find rectanges in given image
+def find_rects(img, tol=RECT_TOLERANCE):
 	blobs = img.findBlobs()
-	if blobs:
-		rects = blobs.filter([b.isRectangle(0.5) for b in blobs])
-		for rect in rects:
-			##TODO: write process for each blob
-			rect.drawOutline((128,0,0),-1,4)
-	return img
+	if not blobs:
+		return 0
+	rects = blobs.filter([b.isRectangle(tol) for b in blobs])
+	return rects
 	
 def check_success():
 	##TODO: write function
