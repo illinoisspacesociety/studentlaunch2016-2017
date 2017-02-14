@@ -35,11 +35,13 @@ def get_size():
 	##TODO: write function
 	return 0
 	
+# Function to find blobs in given image
 def find_blobs(img):
 	blobs = img.findBlobs()
 	if blobs:
-		rects = blobs.filter([b.isRectangle(0.1) for b in blobs])
+		rects = blobs.filter([b.isRectangle(0.5) for b in blobs])
 		for rect in rects:
+			##TODO: write process for each blob
 			rect.drawOutline((128,0,0),-1,4)
 	return img
 	

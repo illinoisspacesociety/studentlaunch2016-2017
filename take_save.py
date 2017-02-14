@@ -12,7 +12,8 @@ cam = SimpleCV.Camera()
 i = 0
 while i<4000:
 	img = cam.getImage()
-	img.save(directory+img_name+str(i)+img_type)
+	img.save(directory+img_name+time.time()+img_type)
 	i = i+1
+	sleep(1)
 	#break #comment out to continually take and save images
 #testing testing
