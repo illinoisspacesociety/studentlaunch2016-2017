@@ -54,6 +54,9 @@ def save_image(img):
 	return 1
 
 def log(log):
+	with open('log','w') as f:
+		f.write(log)
+	f.closed
 	return 0
 
 if __name__ == '__main__':

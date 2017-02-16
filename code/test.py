@@ -1,9 +1,12 @@
 from main import *
 from SimpleCV import *
-import time
+#import time
+from datetime import *
 
 test_rect = 0
-test_tolerances = 1
+test_tolerances = 0
+test_pic_time = 1
+#print time.now()
 
 # Show rectangles in pic
 if(test_rect):
@@ -23,4 +26,18 @@ if(test_tolerances):
 		rects = find_rects(img, i/100)
 		for rect in rects:
 			rect.drawOutline((128,0,0),-1,4)
-			
+		
+if(test_pic_time):
+	width = 1920
+	height = 1080
+	cam = SimpleCV.Camera(prop_set={'width':width, 'height':height})
+	i = 0
+	while(i<100):
+		t1 = datetime.now()
+		img = capture_image(cam)
+		save_image(img)
+		t2 = datetime.now()
+		dt = t2 - t1
+		print dt.seconds*1000000 + dt.microseconds
+		#log(dt.seconds*1000000 + dt.microseconds)
+		#log("Res: "str(width)+", "+str(height)+"\nTime:"+str(t2-t1)+"\n")
