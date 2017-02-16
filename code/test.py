@@ -32,12 +32,14 @@ if(test_pic_time):
 	height = 1080
 	cam = SimpleCV.Camera(prop_set={'width':width, 'height':height})
 	i = 0
+	write_log("test")
 	while(i<100):
 		t1 = datetime.now()
 		img = capture_image(cam)
 		save_image(img)
 		t2 = datetime.now()
 		dt = t2 - t1
-		print dt.seconds*1000000 + dt.microseconds
-		#log(dt.seconds*1000000 + dt.microseconds)
+		t = str(dt.seconds*1000000 + dt.microseconds)
+		print t
+		write_log(t)
 		#log("Res: "str(width)+", "+str(height)+"\nTime:"+str(t2-t1)+"\n")

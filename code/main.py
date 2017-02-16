@@ -53,10 +53,13 @@ def save_image(img):
 	img.save(DIRECTORY+IMAGE_NAME+t+IMAGE_TYPE)
 	return 1
 
-def log(log):
-	with open('log','w') as f:
-		f.write(log)
-	f.closed
+def write_log(log):
+	f = open('log','w')
+	f.seek(0,2)
+	f.write(log)
+	#with open('log','w') as f:
+		#f.write(log)
+	f.close()
 	return 0
 
 if __name__ == '__main__':
