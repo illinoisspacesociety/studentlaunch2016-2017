@@ -32,7 +32,7 @@ if(test_pic_time):
 	height = 1080
 	cam = SimpleCV.Camera(prop_set={'width':width, 'height':height})
 	i = 0
-	write_log("test")
+	#write_log("test")
 	while(i<100):
 		t1 = datetime.now()
 		img = capture_image(cam)

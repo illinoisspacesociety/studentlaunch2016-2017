@@ -54,9 +54,9 @@ def save_image(img):
 	return 1
 
 def write_log(log):
-	f = open('log','w')
+	f = open('log','a+')
 	f.seek(0,2)
-	f.write(log)
+	f.write(log+"\n")
 	#with open('log','w') as f:
 		#f.write(log)
 	f.close()
