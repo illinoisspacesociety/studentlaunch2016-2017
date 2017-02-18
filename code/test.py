@@ -5,9 +5,9 @@ from datetime import datetime, timedelta
 
 test_rect = 0
 test_tolerances = 0
-test_pic_time_1080 = 0
+test_pic_time_1080 = 1
 test_pic_time_max = 0
-test_blob_colors = 1
+test_blob_colors = 0
 test_color_matching = 0
 
 # Show rectangles in pic
@@ -42,6 +42,9 @@ if(test_pic_time_1080):
 	while(i<100):
 		t1 = datetime.now()
 		img = capture_image(cam)
+		blobs = img.findBlobs()
+		for blob in blobs:
+			blob.drawOutline((128,0,0),-1,4)
 		save_image(img)
 		t2 = datetime.now()
 		dt = t2 - t1
@@ -60,6 +63,9 @@ if(test_pic_time_max):
 	while(i<100):
 		t1 = datetime.now()
 		img = capture_image(cam)
+		blobs = img.findBlobs()
+		for blob in blobs:
+			blob.drawOutline((128,0,0),-1,4)
 		save_image(img)
 		t2 = datetime.now()
 		dt = t2 - t1
