@@ -24,14 +24,19 @@ if(test_rect):
 	
 # Logs the time to find rectangles in image
 if(test_blob_time):
-	img = Image("test_images/test11.png")
-	log("\nFinding Rectangles\n")
+	width = 1920
+	height = 1080
+	cam = SimpleCV.Camera(prop_set={'width':width, 'height':height})
+	write_log("\nFinding Rectangles\n")
 	i = 0
 	while(i<100):
 		t1 = datetime.now()
-		img = Image("test_images/test11.png")
+		img = capture_image(cam)
 		rects = find_rects(img, float(i)/100)
 		i += 1
+		for rect in rects:
+			rect.drawOutline((128,0,0),-1,4)
+		save_image(img)
 		t2 = datetime.now()
 		dt = t2 - t1
 		t = str(dt.seconds*1000000 + dt.microseconds)
