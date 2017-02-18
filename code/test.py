@@ -4,8 +4,9 @@ import time
 from datetime import datetime, timedelta
 
 test_rect = 0
+test_blob_time = 1
 test_tolerances = 0
-test_pic_time_1080 = 1
+test_pic_time_1080 = 0
 test_pic_time_max = 0
 test_blob_colors = 0
 test_color_matching = 0
@@ -18,9 +19,27 @@ if(test_rect):
 	rects = find_rects(img, 0.4)
 	for rect in rects:
 		rect.drawOutline((128,0,0),-1,4)
-	img.show()
+	save_image(img)
 	time.sleep(3)
 	
+# Logs the time to find rectangles in image
+if(test_blob_time):
+	img = Image("test_images/test11.png")
+	log("\nFinding Rectangles\n")
+	i = 0
+	while(i<100):
+		t1 = datetime.now()
+		img = Image("test_images/test11.png")
+		rects = find_rects(img, float(i)/100)
+		i += 1
+		t2 = datetime.now()
+		dt = t2 - t1
+		t = str(dt.seconds*1000000 + dt.microseconds)
+		print i
+		print t
+		write_log(t)
+	
+
 #Saves 100 versions of test file showing various tolerances of blobs rect
 if(test_tolerances):
 	i = 0
