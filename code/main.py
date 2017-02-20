@@ -10,7 +10,8 @@ WIDTH = 1920
 HEIGHT = 1080
 RECT_TOLERANCE = 0.5
 COLOR_TOLERANCE = 50
-DIRECTORY = "/home/pi/images/"
+#DIRECTORY = "/home/pi/images/"
+DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "log"
@@ -24,7 +25,7 @@ def main():
 		rects = find_rects(img)
 		draw_blobs(img, rects)
 		if(check_success()):
-			save_image(img)
+			save_image(img,True)
 			print "Success\n"
 		
 # Function to capture image from camera
@@ -36,7 +37,7 @@ def capture_image(cam):
 
 def draw_blobs(img, blobs):
 	for blob in blobs:
-		blob.drawOutline((128,0,0),-1,4)
+		blob.drawOutline((128,0,0),width=4,layer=img.dl())
 
 def get_size():
 	##TODO: write function
@@ -76,9 +77,12 @@ def rgb_to_hue(color):
 	return H
 	
 # Function to save the image in the given directory
-def save_image(img):
+def save_image(img,with_dl=False):
 	t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
 	img.save(DIRECTORY+IMAGE_NAME+t+IMAGE_TYPE)
+	if(with_dl):
+		img.dl().clear()
+		img.save(DIRECTORY+IMAGE_NAME+t+"_nodl"+IMAGE_TYPE)
 	return 1
 
 # Function to write given info to log file

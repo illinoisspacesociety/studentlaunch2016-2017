@@ -112,10 +112,12 @@ if(test_color_matching):
 	print "testing"
 	
 if(test_drawing_layer):
-	img = Image("test_images/test3.png")
+	img = Image("test_images/test2.png")
 	dl = img.dl()
 	rects = find_rects(img)
 	for rect in rects:
 		rect.drawOutline(color=(128,0,0),width=4,layer=dl)
-	save_image(dl)
-	save_image(img)
+	img.save("/home/asa/Documents/StudentLaunch/wdl.png")
+	#img = Image("/home/asa/Documents/StudentLaunch/wodl.png")
+	img.dl().clear()
+	img.save("/home/asa/Documents/StudentLaunch/wodl.png")
