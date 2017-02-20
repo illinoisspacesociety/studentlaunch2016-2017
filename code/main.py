@@ -6,8 +6,8 @@ from datetime import datetime
 import time
 
 # Constants
-WIDTH = 0
-HEIGHT = 0
+WIDTH = 1920
+HEIGHT = 1080
 RECT_TOLERANCE = 0.5
 COLOR_TOLERANCE = 50
 DIRECTORY = "/home/pi/images/"
@@ -17,11 +17,12 @@ LOG_FILE = "log"
 
 # Main function
 def main():
-	cam = SimpleCV.Camera()
+	cam = SimpleCV.Camera(prop_set={'width':WIDTH, 'height':HEIGHT})
 	while(1):
 		img = capture_image(cam)
 		size = get_size()
 		rects = find_rects(img)
+		draw_blobs(img, rects)
 		if(check_success()):
 			save_image(img)
 			print "Success\n"
@@ -32,7 +33,11 @@ def capture_image(cam):
 	if(img): return img
 	print "Could not get image\n"
 	return 0
-	
+
+def draw_blobs(img, blobs):
+	for blob in blobs:
+		blob.drawOutline((128,0,0),-1,4)
+
 def get_size():
 	##TODO: write function
 	return 0

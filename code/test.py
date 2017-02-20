@@ -4,12 +4,13 @@ import time
 from datetime import datetime, timedelta
 
 test_rect = 0
-test_blob_time = 1
+test_blob_time = 0
 test_tolerances = 0
 test_pic_time_1080 = 0
 test_pic_time_max = 0
 test_blob_colors = 0
 test_color_matching = 0
+test_drawing_layer = 1
 
 # Show rectangles in pic
 if(test_rect):
@@ -109,3 +110,12 @@ if(test_blob_colors):
 #Tests if blobs color near target		
 if(test_color_matching):
 	print "testing"
+	
+if(test_drawing_layer):
+	img = Image("test_images/test3.png")
+	dl = img.dl()
+	rects = find_rects(img)
+	for rect in rects:
+		rect.drawOutline(color=(128,0,0),width=4,layer=dl)
+	save_image(dl)
+	save_image(img)
