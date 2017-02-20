@@ -10,11 +10,12 @@ WIDTH = 1920
 HEIGHT = 1080
 RECT_TOLERANCE = 0.5
 COLOR_TOLERANCE = 50
-#DIRECTORY = "/home/pi/images/"
-DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
+DIRECTORY = "/home/pi/images/"
+#DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "log"
+DL = True
 
 # Main function
 def main():
@@ -25,7 +26,7 @@ def main():
 		rects = find_rects(img)
 		draw_blobs(img, rects)
 		if(check_success()):
-			save_image(img,True)
+			save_image(img,DL)
 			print "Success\n"
 		
 # Function to capture image from camera
