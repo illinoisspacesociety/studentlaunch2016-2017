@@ -9,7 +9,7 @@ import time
 WIDTH = 0
 HEIGHT = 0
 RECT_TOLERANCE = 0.5
-COLOR_TOLERANCE = 100
+COLOR_TOLERANCE = 50
 DIRECTORY = "/home/pi/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
@@ -54,14 +54,21 @@ def check_success():
 # Function to check that blob matches target color
 def check_color(blob,target):
 	color = blob.meanColor()
-	match = (0,0,0)
-	for i in range(1,3):
-		if(color[i] >= target[i] - COLOR_TOLERANCE and color[i] <= target[i] + COLOR_TOLERANCE):
-			match[i] = 1
-		i += 1
-	if(color[1] and color[2] and color[3]):
+	hue = rgb_to_hue(color)
+	target_hue = rgb_to_hue(target)
+	if (hue >= target_hue - COLOR_TOLERANCE and hue <= target_hue + COLOR_TOLERANCE):
 		return 1
 	return 0
+	
+# Function to get the hue of an RGB value
+def rgb_to_hue(color):
+	R = float(color[0])
+	G = float(color[1])
+	B = float(color[2])
+	alpha = 1/2 * (2*R-G-B)
+	beta = sqrt(3)/2 * (G-B)
+	H = atan2(beta,alpha)
+	return H
 	
 # Function to save the image in the given directory
 def save_image(img):
