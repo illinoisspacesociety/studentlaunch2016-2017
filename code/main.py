@@ -36,6 +36,7 @@ def capture_image(cam):
 	print "Could not get image\n"
 	return 0
 
+# Function to draw blob outlines on given image's drawing layer
 def draw_blobs(img, blobs):
 	for blob in blobs:
 		blob.drawOutline((128,0,0),width=4,layer=img.dl())
@@ -78,6 +79,7 @@ def rgb_to_hue(color):
 	return H
 	
 # Function to save the image in the given directory
+# Set with_dl=True to save two copies: one w/Drawing layer and one w/o
 def save_image(img,with_dl=False):
 	t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
 	img.save(DIRECTORY+IMAGE_NAME+t+IMAGE_TYPE)
@@ -91,8 +93,6 @@ def write_log(log):
 	f = open('log','a+')
 	f.seek(0,2)
 	f.write(log+"\n")
-	#with open('log','w') as f:
-		#f.write(log)
 	f.close()
 	return 0
 
