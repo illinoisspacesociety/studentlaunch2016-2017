@@ -6,11 +6,11 @@ from datetime import datetime, timedelta
 test_rect = 0
 test_blob_time = 0
 test_tolerances = 0
-test_pic_time_1080 = 0
+test_pic_time_1080 = 1
 test_pic_time_max = 0
 test_blob_colors = 0
 test_color_matching = 0
-test_drawing_layer = 1
+test_drawing_layer = 0
 
 # Show rectangles in pic
 if(test_rect):
@@ -59,17 +59,17 @@ if(test_tolerances):
 		
 #Logs time to take and save a 1920x1080 pic
 if(test_pic_time_1080):
-	width = 1920
-	height = 1080
+	width = 1280
+	height = 720
 	cam = SimpleCV.Camera(prop_set={'width':width, 'height':height})
 	i = 0
 	write_log("\n1920x1080\n")
 	while(i<100):
 		t1 = datetime.now()
 		img = capture_image(cam)
-		blobs = img.findBlobs()
-		for blob in blobs:
-			blob.drawOutline((128,0,0),-1,4)
+		#blobs = img.findBlobs()
+		#for blob in blobs:
+		#	blob.drawOutline((128,0,0),-1,4)
 		save_image(img)
 		t2 = datetime.now()
 		dt = t2 - t1

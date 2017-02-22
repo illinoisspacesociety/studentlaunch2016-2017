@@ -6,28 +6,32 @@ from datetime import datetime
 import time
 
 # Constants
-WIDTH = 1920
-HEIGHT = 1080
+WIDTH = 1280
+HEIGHT = 720
 RECT_TOLERANCE = 0.5
 COLOR_TOLERANCE = 50
 DIRECTORY = "/home/pi/images/"
 #DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
-LOG_FILE = "log"
+LOG_FILE = "/home/pi/studentlaunch2016-2017/code/log"
 DL = True
 
 # Main function
 def main():
 	cam = SimpleCV.Camera(prop_set={'width':WIDTH, 'height':HEIGHT})
-	while(1):
+	i = 0
+	while(i<20000): 
 		img = capture_image(cam)
 		size = get_size()
-		rects = find_rects(img)
-		draw_blobs(img, rects)
+		#rects = find_rects(img)
+		#draw_blobs(img, rects)
+		i += 1
 		if(check_success()):
-			save_image(img,DL)
-			print "Success\n"
+			t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
+			save_image(img)
+			write_log(t)
+			
 		
 # Function to capture image from camera
 def capture_image(cam):
@@ -90,7 +94,7 @@ def save_image(img,with_dl=False):
 
 # Function to write given info to log file
 def write_log(log):
-	f = open('log','a+')
+	f = open(LOG_FILE,'a+')
 	f.seek(0,2)
 	f.write(log+"\n")
 	f.close()
