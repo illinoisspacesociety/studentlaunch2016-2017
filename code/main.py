@@ -24,11 +24,11 @@ def main():
 	while(i<20000): 
 		img = capture_image(cam)
 		size = get_size()
-		#rects = find_rects(img)
-		#draw_blobs(img, rects)
+		rects = find_rects(img)
+		draw_blobs(img, rects)
 		i += 1
 		if(check_success()):
-			t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
+			t = datetime.now().strftime("%H%M%S%f")
 			save_image(img)
 			write_log(t)
 			
