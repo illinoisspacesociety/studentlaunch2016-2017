@@ -29,7 +29,7 @@ def main():
 		i += 1
 		if(check_success()):
 			t = datetime.now().strftime("%H%M%S%f")
-			save_image(img)
+			save_image(img,with_dl=True)
 			write_log(t)
 			
 		
