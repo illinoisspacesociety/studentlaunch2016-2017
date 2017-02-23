@@ -8,8 +8,8 @@ import time
 # Constants
 WIDTH = 1280
 HEIGHT = 720
-RECT_TOLERANCE = 0.5
-COLOR_TOLERANCE = 50
+RECT_TOLERANCE = 0.2
+COLOR_TOLERANCE = 1
 DIRECTORY = "/home/pi/images/"
 #DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
@@ -31,14 +31,13 @@ def main():
 			t = datetime.now().strftime("%H%M%S%f")
 			save_image(img,with_dl=True)
 			write_log(t)
-			
 		
 # Function to capture image from camera
 def capture_image(cam):
 	img = cam.getImage()
 	if(img): return img
 	print "Could not get image\n"
-	return 0
+	return False
 
 # Function to draw blob outlines on given image's drawing layer
 def draw_blobs(img, blobs):
@@ -47,30 +46,43 @@ def draw_blobs(img, blobs):
 
 def get_size():
 	##TODO: write function
-	return 0
+	return False
 	
 # Function to find rectanges in given image
 def find_rects(img, tol=RECT_TOLERANCE):
-	print tol
+	#print tol
 	blobs = img.findBlobs()
 	if not blobs:
-		return 0
+		return False
 	rects = blobs.filter([b.isRectangle(tol) for b in blobs])
 	return rects
 	
 # Function to determin if the image has successfully seen the tarps
 def check_success():
 	##TODO: write function
-	return 1
+	return True
 	
 # Function to check that blob matches target color
+# Uses Hue comparison
 def check_color(blob,target):
 	color = blob.meanColor()
 	hue = rgb_to_hue(color)
 	target_hue = rgb_to_hue(target)
 	if (hue >= target_hue - COLOR_TOLERANCE and hue <= target_hue + COLOR_TOLERANCE):
-		return 1
-	return 0
+		return True
+	return False
+	
+# Function to check that blobs matches target color
+# Uses RGB value comparison
+def check_color2(blob,target):
+	color = blob.meanColor()
+	test = [0,0,0]
+	tol = COLOR_TOLERANCE
+	for i in range(0,3):
+		c = color[i]
+		t = target[i]
+		test[i] = (c >= t - tol and c <= t + tol)
+	return (test[0] and test[1] and test[2])
 	
 # Function to get the hue of an RGB value
 def rgb_to_hue(color):

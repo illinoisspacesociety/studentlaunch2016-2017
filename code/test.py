@@ -6,11 +6,12 @@ from datetime import datetime, timedelta
 test_rect = 0
 test_blob_time = 0
 test_tolerances = 0
-test_pic_time_1080 = 1
+test_pic_time_1080 = 0
 test_pic_time_max = 0
 test_blob_colors = 0
 test_color_matching = 0
 test_drawing_layer = 0
+test_color_video = 1
 
 # Show rectangles in pic
 if(test_rect):
@@ -106,6 +107,7 @@ if(test_blob_colors):
 	rects = find_rects(img)
 	for rect in rects:
 		print rect.meanColor()
+		print check_color2(rect,(100,100,100))
 
 #Tests if blobs color near target		
 if(test_color_matching):
@@ -121,3 +123,16 @@ if(test_drawing_layer):
 	#img = Image("/home/asa/Documents/StudentLaunch/wodl.png")
 	img.dl().clear()
 	img.save("/home/asa/Documents/StudentLaunch/wodl.png")
+
+if(test_color_video):
+	width = 1280
+	height = 720
+	cam = SimpleCV.Camera(prop_set={'width':width, 'height':height})
+	while(1):
+		img = capture_image(cam)
+		rects = find_rects(img)
+		for rect in rects:
+			if(check_color(rect,(0,0,255))):
+				rect.drawOutline((128,0,0),-1,4)
+				print rect.meanColor()
+		img.show()
