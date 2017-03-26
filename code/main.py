@@ -10,8 +10,8 @@ WIDTH = 1280
 HEIGHT = 720
 RECT_TOLERANCE = 0.2
 COLOR_TOLERANCE = 1
-DIRECTORY = "/home/pi/images/"
-#DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
+#DIRECTORY = "/home/pi/images/"
+DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "/home/pi/studentlaunch2016-2017/code/log"
@@ -57,7 +57,7 @@ def find_rects(img, tol=RECT_TOLERANCE):
 	rects = blobs.filter([b.isRectangle(tol) for b in blobs])
 	return rects
 	
-# Function to determin if the image has successfully seen the tarps
+# Function to determine if the image has successfully seen the tarps
 def check_success():
 	##TODO: write function
 	return True
@@ -103,6 +103,9 @@ def save_image(img,with_dl=False):
 		img.dl().clear()
 		img.save(DIRECTORY+IMAGE_NAME+t+"_nodl"+IMAGE_TYPE)
 	return 1
+	
+def save_test_image(img,text):
+	img.save(DIRECTORY+text+IMAGE_TYPE)
 
 # Function to write given info to log file
 def write_log(log):

@@ -11,7 +11,11 @@ test_pic_time_max = 0
 test_blob_colors = 0
 test_color_matching = 0
 test_drawing_layer = 0
-test_color_video = 1
+test_color_video = 0
+test_parameters = 0
+test_edges = 0
+test_blob_on_edge = 1
+test_binarize = 0
 
 # Show rectangles in pic
 if(test_rect):
@@ -136,3 +140,87 @@ if(test_color_video):
 				rect.drawOutline((128,0,0),-1,4)
 				print rect.meanColor()
 		img.show()
+
+#Iterates over possible parameter values for finding blobs		
+if(test_parameters):
+	img = Image("test_images/test15.png")
+	i = 0
+	#while(i < 100):
+		#blobs = img.findBlobs(threshval=float(i)/100)
+		#draw_blobs(img,blobs)
+		#save_test_image(img,"thresh=%f" % (float(i)/100))
+		#i += 1
+	i = 3
+	j = 480/4
+	k = 640/4
+	l = 640/2
+	while(i < 480):
+		while(j < 640/2):
+			#while(k < 4*640/5):
+				#while(l < 4*640/5):
+					blobs = img.findBlobs(threshval=-1, minsize=j, maxsize=640-j, threshblocksize=i, threshconstant=0)
+					if blobs:
+						draw_blobs(img,blobs)
+						save_test_image(img,"min="+str(j)+"_max="+str(640-j)+"_block="+str(i))
+					img.dl().clear()
+					#l += 1
+					#print "l: " + l
+				#l = 0
+				#k += 1
+				#"k: " + k
+			#k = 0
+					j += 2
+					print "i: "+str(i)+" j: "+str(j)
+		j = 480/4
+		i += 4
+		#print "i: " + str(i)
+	print "Done\n"
+	
+if(test_edges):
+	img = Image("test_images/test17.png")
+	i=0
+	j=100
+	while(i < 100):
+		j = 100
+		i += 1
+		while(j > i):
+			img = Image("test_images/test14.png")
+			edge = img.edges(i,j)
+			save_test_image(edge,"j="+str(j)+"_i="+str(i))
+			print "i: "+str(i)+" j: "+str(j)
+			j -= 1
+	save_test_image(img,"image")
+
+if(test_blob_on_edge):
+	img = Image("test_images/test17.jpg")
+	edge = img.edges(60,61)
+	save_test_image(edge,"edge")
+	blobs = edge.findBlobs(threshval=-1, minsize=200, maxsize=500*500, threshblocksize=0, threshconstant=0)
+	draw_blobs(edge,blobs)
+	save_test_image(edge,"blobs")
+	img.dl().clear()
+	blobs = img.findBlobsFromMask(edge)
+	draw_blobs(img,blobs)
+	save_test_image(img,"test")
+
+if(test_binarize):
+	img = Image("test_images/test17.jpg")
+	img_copy = img
+	i = 0
+	j = 5
+	while(i<1000):
+		j = 5
+		while(j<255):
+			img_copy = img
+			bina = img_copy.binarize(blocksize=i,p=j)
+			save_test_image(bina,"bin_i="+str(i)+"_j="+str(j))
+			blobs = img.findBlobsFromMask(bina)
+			if blobs: 
+				draw_blobs(img,blobs)
+				save_test_image(img,"img_i="+str(i)+"_j="+str(j))
+			print "i="+str(i)+" j="+str(j)
+			img.dl().clear()
+			j += 5
+		if(i==0): i=1
+		i += 10
+		
