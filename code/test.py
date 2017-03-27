@@ -192,10 +192,10 @@ if(test_edges):
 	save_test_image(img,"image")
 
 if(test_blob_on_edge):
-	img = Image("test_images/test17.jpg")
+	img = Image("test_images/test14.png")
 	edge = img.edges(60,61)
 	save_test_image(edge,"edge")
-	blobs = edge.findBlobs(threshval=-1, minsize=200, maxsize=500*500, threshblocksize=0, threshconstant=0)
+	blobs = edge.findBlobs(threshval=-1, minsize=200, maxsize=500, threshblocksize=0, threshconstant=0)
 	draw_blobs(edge,blobs)
 	save_test_image(edge,"blobs")
 	img.dl().clear()
