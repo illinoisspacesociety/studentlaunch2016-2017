@@ -232,22 +232,23 @@ if(test_color_distance):
 	yellow = (255,255,0)
 	
 	i = 0
-	while(i<1000):
+	while(i<1):
 		t1 = datetime.now()
 		
 		img = Image("test_images/test19.png")
 		color = img.colorDistance(blue)
 		save_test_image(color,"blue_search")
-		inv = color.invert()
-		save_test_image(inv,"blue_inverse")
-		bina = inv.binarize(100)
-		save_test_image(bina,"blue_bin")
-		bin_inv = bina.invert()
-		blobs = img.findBlobsFromMask(bin_inv)
+		save_test_image(color,"blue_inverse_"+str(i))
+		bina = color.binarize(140)
+		save_test_image(bina,"blue_bin_"+str(i))
+		blobs = img.findBlobsFromMask(bina)
 		if blobs:
 			draw_blobs(img,blobs)
-			save_test_image(img,"blue_blobs")
+			save_test_image(img,"blue_blobs_"+str(i))
+		i += 1
+		print i
 	
+'''
 		img = Image("test_images/test19.png")
 		color = img.colorDistance(red)
 		save_test_image(color,"red_search")
@@ -279,40 +280,43 @@ if(test_color_distance):
 		t = str(dt.seconds*1000000 + dt.microseconds)
 		print t
 		write_log(t)
-		i += 1
-		
+'''
+
 if(test_color_distance2):
 	blue = (0,0,255)
 	red = (255,0,0)
 	yellow = (255,255,0)
 	
 	i = 0
-	while(i<1):
+	while(i<100):
 		t1 = datetime.now()
 		img = Image("test_images/test19.png")		
 		img1 = img
 
-		color = img1.colorDistance(blue)
-		inv = color.invert()
-		bina = inv.binarize(100)
-		bin_inv = bina.invert()
-		blobs = img.findBlobsFromMask(bin_inv)
+		color = img.colorDistance(blue)
+		save_test_image(color,"blue_search")
+		save_test_image(color,"blue_inverse_"+str(i))
+		bina = color.binarize(140)
+		save_test_image(bina,"blue_bin_"+str(i))
+		blobs = img.findBlobsFromMask(bina)
 		if blobs:
 			draw_blobs(img,blobs)
-	
-		color = img1.colorDistance(red)
-		inv = color.invert()
-		bina = inv.binarize(125)
-		bin_inv = bina.invert()
-		blobs = img.findBlobsFromMask(bin_inv)
+			
+		color = img.colorDistance(red)
+		save_test_image(color,"red_search")
+		save_test_image(color,"red_inverse_"+str(i))
+		bina = color.binarize(140)
+		save_test_image(bina,"red_bin_"+str(i))
+		blobs = img.findBlobsFromMask(bina)
 		if blobs:
 			draw_blobs(img,blobs)
-
-		color = img1.colorDistance(yellow)
-		inv = color.invert()
-		bina = inv.binarize(125)
-		bin_inv = bina.invert()
-		blobs = img.findBlobsFromMask(bin_inv)
+			
+		color = img.colorDistance(yellow)
+		save_test_image(color,"yellow_search")
+		save_test_image(color,"yellow_inverse_"+str(i))
+		bina = color.binarize(140)
+		save_test_image(bina,"yellow_bin_"+str(i))
+		blobs = img.findBlobsFromMask(bina)
 		if blobs:
 			draw_blobs(img,blobs)
 		
