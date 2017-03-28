@@ -14,8 +14,9 @@ test_drawing_layer = 0
 test_color_video = 0
 test_parameters = 0
 test_edges = 0
-test_blob_on_edge = 1
+test_blob_on_edge = 0
 test_binarize = 0
+test_color_distance = 1
 
 # Show rectangles in pic
 if(test_rect):
@@ -192,10 +193,10 @@ if(test_edges):
 	save_test_image(img,"image")
 
 if(test_blob_on_edge):
-	img = Image("test_images/test14.png")
+	img = Image("test_images/test18.png")
 	edge = img.edges(60,61)
 	save_test_image(edge,"edge")
-	blobs = edge.findBlobs(threshval=-1, minsize=200, maxsize=500, threshblocksize=0, threshconstant=0)
+	blobs = edge.findBlobs(threshval=-1, minsize=1280/7, maxsize=1280/4, threshblocksize=0, threshconstant=0)
 	draw_blobs(edge,blobs)
 	save_test_image(edge,"blobs")
 	img.dl().clear()
@@ -204,7 +205,7 @@ if(test_blob_on_edge):
 	save_test_image(img,"test")
 
 if(test_binarize):
-	img = Image("test_images/test17.jpg")
+	img = Image("test_images/test18.png")
 	img_copy = img
 	i = 0
 	j = 5
@@ -223,4 +224,47 @@ if(test_binarize):
 			j += 5
 		if(i==0): i=1
 		i += 10
-		
+	
+if(test_color_distance):
+	blue = (0,0,255)
+	red = (255,0,0)
+	yellow = (255,255,0)
+	
+	img = Image("test_images/test18.png")
+	color = img.colorDistance(blue)
+	save_test_image(color,"blue_search")
+	inv = color.invert()
+	save_test_image(inv,"blue_inverse")
+	bina = inv.binarize(100)
+	save_test_image(bina,"blue_bin")
+	bin_inv = bina.invert()
+	blobs = img.findBlobsFromMask(bin_inv)
+	if blobs:
+		draw_blobs(img,blobs)
+		save_test_image(img,"blue_blobs")
+	
+	img = Image("test_images/test18.png")
+	color = img.colorDistance(red)
+	save_test_image(color,"red_search")
+	inv = color.invert()
+	save_test_image(inv,"red_inverse")
+	bina = inv.binarize(125)
+	save_test_image(bina,"red_bin")
+	bin_inv = bina.invert()
+	blobs = img.findBlobsFromMask(bin_inv)
+	if blobs:
+		draw_blobs(img,blobs)
+		save_test_image(img,"red_blobs")
+	
+	img = Image("test_images/test18.png")
+	color = img.colorDistance(yellow)
+	save_test_image(color,"yellow_search")
+	inv = color.invert()
+	save_test_image(inv,"yellow_inverse")
+	bina = inv.binarize(100)
+	save_test_image(bina,"yellow_bin")
+	bin_inv = bina.invert()
+	blobs = img.findBlobsFromMask(bin_inv)
+	if blobs:
+		draw_blobs(img,blobs)
+		save_test_image(img,"yellow_blobs")
