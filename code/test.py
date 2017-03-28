@@ -16,7 +16,8 @@ test_parameters = 0
 test_edges = 0
 test_blob_on_edge = 0
 test_binarize = 0
-test_color_distance = 1
+test_color_distance = 0
+test_color_distance2 = 1
 
 # Show rectangles in pic
 if(test_rect):
@@ -273,6 +274,49 @@ if(test_color_distance):
 			draw_blobs(img,blobs)
 			save_test_image(img,"yellow_blobs")
 		
+		t2 = datetime.now()
+		dt = t2 - t1
+		t = str(dt.seconds*1000000 + dt.microseconds)
+		print t
+		write_log(t)
+		i += 1
+		
+if(test_color_distance2):
+	blue = (0,0,255)
+	red = (255,0,0)
+	yellow = (255,255,0)
+	
+	i = 0
+	while(i<1):
+		t1 = datetime.now()
+		img = Image("test_images/test19.png")		
+		img1 = img
+
+		color = img1.colorDistance(blue)
+		inv = color.invert()
+		bina = inv.binarize(100)
+		bin_inv = bina.invert()
+		blobs = img.findBlobsFromMask(bin_inv)
+		if blobs:
+			draw_blobs(img,blobs)
+	
+		color = img1.colorDistance(red)
+		inv = color.invert()
+		bina = inv.binarize(125)
+		bin_inv = bina.invert()
+		blobs = img.findBlobsFromMask(bin_inv)
+		if blobs:
+			draw_blobs(img,blobs)
+
+		color = img1.colorDistance(yellow)
+		inv = color.invert()
+		bina = inv.binarize(125)
+		bin_inv = bina.invert()
+		blobs = img.findBlobsFromMask(bin_inv)
+		if blobs:
+			draw_blobs(img,blobs)
+		
+		save_test_image(img,"blobs")
 		t2 = datetime.now()
 		dt = t2 - t1
 		t = str(dt.seconds*1000000 + dt.microseconds)
