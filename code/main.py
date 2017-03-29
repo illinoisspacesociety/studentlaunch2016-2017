@@ -25,7 +25,6 @@ def main():
 	cam = SimpleCV.Camera(prop_set={'width':WIDTH, 'height':HEIGHT})
 	i = 0
 	while(i<20000): 
-		TARP_FOUND = 0
 		img = capture_image(cam)
 		size = get_size()
 		#rects = find_rects(img)
@@ -34,8 +33,7 @@ def main():
 		i += 1
 		#if(check_success()):
 		if(tarps):
-			t = datetime.now().strftime("%H%M%S%f")
-			save_image(img,with_dl=True)
+			save_image(img,with_dl=False)
 			write_log(t)
 		
 # Function to capture image from camera
@@ -64,7 +62,6 @@ def color_check(img, color):
 	b = c.binarize(140)
 	blobs = img.findBlobsFromMask(b)
 	if blobs:
-		TARP_FOUND = 1
 		return blobs
 
 # Function to find rectanges in given image
