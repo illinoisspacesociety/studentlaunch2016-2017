@@ -10,6 +10,7 @@ WIDTH = 1280
 HEIGHT = 720
 RECT_TOLERANCE = 0.2
 COLOR_TOLERANCE = 1
+#SIZE_TOLERANCE = some number
 #DIRECTORY = "/home/pi/images/"
 DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
@@ -48,13 +49,21 @@ def draw_blobs(img, blobs):
 	for blob in blobs:
 		blob.drawOutline((128,0,0),width=4,layer=img.dl())
 
+# Function to get the size of the tarps in pixels based on altimeter data
 def get_size():
 	##TODO: write function
+    #Read current altitude from altimeter data
+    #Navigate through relevant altitude-to-tarp size table
 	return False
 
 def find_tarps(img):
 	tarps = color_check(img,RED) + color_check(img,BLUE) + color_check(img,YELLOW)
+    tarps.filter(filter_size(tarps)) #define filter_size
 	return tarps
+
+def filter_size(blobs, tol = SIZE_TOLERANCE):
+    tarp_size = get_size()
+    return tarp_size >= blobs.area() - tol and tarp_size <= blobs.area() + tol
 	
 # Function that returns blobs of a certain RGB color from an image
 def color_check(img, color):
@@ -65,6 +74,7 @@ def color_check(img, color):
 		return blobs
 
 # Function to find rectanges in given image
+# Eventually this and find_correct_size can be combined into a single function
 def find_rects(img, tol=RECT_TOLERANCE):
 	#print tol
 	blobs = img.findBlobs()
@@ -72,6 +82,16 @@ def find_rects(img, tol=RECT_TOLERANCE):
 		return False
 	rects = blobs.filter([b.isRectangle(tol) for b in blobs])
 	return rects
+
+# Function to filter out the blobs that are not the correct size
+# Should be called AFTER find_rects
+#def find_correct_size(img, tol = SIZE_TOLERANCE):
+#    blobs = img.findBlobs()
+#    if not blobs:
+#        return False
+#    tarp_size = get_size()
+#    correct_size_blobs = blobs.filter(tarp_size >= blobs.area() - tol and tarp_size <= blobs.area() + tol)
+#    return correct_size_blobs
 	
 # Function to determine if the image has successfully seen the tarps
 def check_success():
