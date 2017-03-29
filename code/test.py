@@ -17,7 +17,8 @@ test_edges = 0
 test_blob_on_edge = 0
 test_binarize = 0
 test_color_distance = 0
-test_color_distance2 = 1
+test_color_distance2 = 0
+test_new_main = 1
 
 # Show rectangles in pic
 if(test_rect):
@@ -327,3 +328,10 @@ if(test_color_distance2):
 		print t
 		write_log(t)
 		i += 1
+		
+if(test_new_main):
+	img = Image("test_images/test19.png")
+	tarps = find_tarps(img)
+	draw_blobs(img, tarps)
+	if(tarps):
+		save_image(img,with_dl=True)

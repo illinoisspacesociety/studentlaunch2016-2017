@@ -10,24 +10,30 @@ WIDTH = 1280
 HEIGHT = 720
 RECT_TOLERANCE = 0.2
 COLOR_TOLERANCE = 1
-DIRECTORY = "/home/pi/images/"
-#DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
+#DIRECTORY = "/home/pi/images/"
+DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "/home/pi/studentlaunch2016-2017/code/log"
 DL = True
+BLUE = (0,0,255)
+RED = (255,0,0)
+YELLOW = (255,255,0)
 
 # Main function
 def main():
 	cam = SimpleCV.Camera(prop_set={'width':WIDTH, 'height':HEIGHT})
 	i = 0
 	while(i<20000): 
+		TARP_FOUND = 0
 		img = capture_image(cam)
 		size = get_size()
-		rects = find_rects(img)
-		draw_blobs(img, rects)
+		#rects = find_rects(img)
+		tarps = find_tarps(img)
+		draw_blobs(img, tarps)
 		i += 1
-		if(check_success()):
+		#if(check_success()):
+		if(tarps):
 			t = datetime.now().strftime("%H%M%S%f")
 			save_image(img,with_dl=True)
 			write_log(t)
@@ -47,7 +53,20 @@ def draw_blobs(img, blobs):
 def get_size():
 	##TODO: write function
 	return False
+
+def find_tarps(img):
+	tarps = color_check(img,RED) + color_check(img,BLUE) + color_check(img,YELLOW)
+	return tarps
 	
+# Function that returns blobs of a certain RGB color from an image
+def color_check(img, color):
+	c = img.colorDistance(color)
+	b = c.binarize(140)
+	blobs = img.findBlobsFromMask(b)
+	if blobs:
+		TARP_FOUND = 1
+		return blobs
+
 # Function to find rectanges in given image
 def find_rects(img, tol=RECT_TOLERANCE):
 	#print tol
