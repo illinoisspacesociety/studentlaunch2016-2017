@@ -29,7 +29,7 @@ def main():
 		size = get_size()
 		#rects = find_rects(img)
 		tarps = find_tarps(img)
-		draw_blobs(img, tarps)
+		#draw_blobs(img, tarps)
 		i += 1
 		#if(check_success()):
 		if(tarps):
@@ -44,16 +44,16 @@ def capture_image(cam):
 	return False
 
 # Function to draw blob outlines on given image's drawing layer
-def draw_blobs(img, blobs):
+def draw_blobs(img, blobs,color):
 	for blob in blobs:
-		blob.drawOutline((128,0,0),width=4,layer=img.dl())
+		blob.drawOutline(color,width=4,layer=img.dl())
 
 def get_size():
 	##TODO: write function
 	return False
 
 def find_tarps(img):
-	tarps = color_check(img,RED) + color_check(img,BLUE) + color_check(img,YELLOW)
+	tarps = [color_check(img,RED), color_check(img,BLUE), color_check(img,YELLOW)]
 	return tarps
 	
 # Function that returns blobs of a certain RGB color from an image

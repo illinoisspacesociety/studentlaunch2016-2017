@@ -19,6 +19,7 @@ test_binarize = 0
 test_color_distance = 0
 test_color_distance2 = 0
 test_new_main = 1
+test_i2c = 0
 
 # Show rectangles in pic
 if(test_rect):
@@ -332,6 +333,32 @@ if(test_color_distance2):
 if(test_new_main):
 	img = Image("test_images/test19.png")
 	tarps = find_tarps(img)
-	draw_blobs(img, tarps)
+	#print tarps.length()
+	draw_blobs(img, tarps[0].filter([b.isRectangle(0.1) for b in tarps[0]]), RED)
+	draw_blobs(img, tarps[1].filter([b.isRectangle(0.1) for b in tarps[1]]), BLUE)
+	draw_blobs(img, tarps[2].filter([b.isRectangle(0.1) for b in tarps[2]]), YELLOW)
 	if(tarps):
 		save_image(img,with_dl=True)
+		
+if(test_i2c):
+	bus = SMBus(1)
+	address = 0x76
+	cmd = 0x40
+	press = 0
+	#with I2CMaster() as master:
+	#	press = master.transaction(writing_bytes(address,cmd),reading(address,1))
+	#press = bus.read_block_data(address,0x00)
+	#bus.write_byte_data(address,0,0x1E)
+	#bus.write_byte_data(address,0,0x00)
+	#pres = bus.read_i2c_block_data(address,0,3)
+	
+	#press1 = bus.write_byte_data(address,0,cmd)
+	#press2 = bus.write_byte_data(address,0,0x00)
+	#press2 = bus.read_byte_data(address,0)
+	bus.write_byte(address,cmd)
+	#press3 = bus.write_byte(address,0x00)
+	press3 = bus.process_call(address,0x40,0)
+	#print press1
+	#print press2
+	print press3
+	bus.close()
