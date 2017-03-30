@@ -33,6 +33,14 @@ def main():
 		i += 1
 		#if(check_success()):
 		if(tarps):
+			for idx, blobs in enumerate(tarps):
+				if(blobs!=0):
+					rects = find_rects(blobs,0.1)
+					color = (0,0,0)
+					if(idx==0): color = BLUE
+					elif(idx==1): color = RED
+					elif(idx==2): color = YELLOW
+					draw_blobs(img,rects,color)
 			save_image(img,with_dl=False)
 			write_log(t)
 		
@@ -63,13 +71,10 @@ def color_check(img, color):
 	blobs = img.findBlobsFromMask(b)
 	if blobs:
 		return blobs
+	else: return 0
 
-# Function to find rectanges in given image
-def find_rects(img, tol=RECT_TOLERANCE):
-	#print tol
-	blobs = img.findBlobs()
-	if not blobs:
-		return False
+# Function to find rectanges in blobs
+def find_rects(blobs, tol=RECT_TOLERANCE):
 	rects = blobs.filter([b.isRectangle(tol) for b in blobs])
 	return rects
 	

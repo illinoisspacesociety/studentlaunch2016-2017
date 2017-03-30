@@ -331,14 +331,27 @@ if(test_color_distance2):
 		i += 1
 		
 if(test_new_main):
-	img = Image("test_images/test19.png")
-	tarps = find_tarps(img)
-	#print tarps.length()
-	draw_blobs(img, tarps[0].filter([b.isRectangle(0.1) for b in tarps[0]]), RED)
-	draw_blobs(img, tarps[1].filter([b.isRectangle(0.1) for b in tarps[1]]), BLUE)
-	draw_blobs(img, tarps[2].filter([b.isRectangle(0.1) for b in tarps[2]]), YELLOW)
-	if(tarps):
-		save_image(img,with_dl=True)
+	i = 0
+	while(i<200): 
+		img = Image("test_images/test19.png")
+		size = get_size()
+		#rects = find_rects(img)
+		tarps = find_tarps(img)
+		#draw_blobs(img, tarps)
+		i += 1
+		#if(check_success()):
+		if(tarps):
+			for idx, blobs in enumerate(tarps):
+				if(blobs!=0):
+					tol = float(i)/1000
+					rects = find_rects(blobs,tol)
+					color = (0,0,0)
+					if(idx==0): color = RED
+					elif(idx==1): color = BLUE
+					elif(idx==2): color = YELLOW
+					if(rects): draw_blobs(img,rects,color)
+			save_test_image(img,"tol="+str(tol))
+		print tol
 		
 if(test_i2c):
 	bus = SMBus(1)
