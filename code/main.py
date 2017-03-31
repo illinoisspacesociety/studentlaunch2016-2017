@@ -10,8 +10,8 @@ WIDTH = 1280
 HEIGHT = 720
 RECT_TOLERANCE = 0.2
 COLOR_TOLERANCE = 1
-DIRECTORY = "/home/pi/images/"
-#DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
+#DIRECTORY = "/home/pi/images/"
+DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "/home/pi/studentlaunch2016-2017/code/log"
@@ -43,7 +43,6 @@ def main():
 					elif(idx==2): color = YELLOW
 					draw_blobs(img,rects,color)
 			save_image(img,with_dl=True)
-			write_log(t)
 		
 # Function to start buzzer
 def buzzer_init():
@@ -125,6 +124,7 @@ def rgb_to_hue(color):
 # Set with_dl=True to save two copies: one w/Drawing layer and one w/o
 def save_image(img,with_dl=False):
 	t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
+	write_log(t)
 	img.save(DIRECTORY+IMAGE_NAME+t+IMAGE_TYPE)
 	if(with_dl):
 		img.dl().clear()
