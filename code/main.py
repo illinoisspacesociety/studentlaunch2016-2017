@@ -10,8 +10,8 @@ WIDTH = 1280
 HEIGHT = 720
 RECT_TOLERANCE = 0.2
 COLOR_TOLERANCE = 1
-#DIRECTORY = "/home/pi/images/"
-DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
+DIRECTORY = "/home/pi/images/"
+#DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "/home/pi/studentlaunch2016-2017/code/log"
@@ -24,6 +24,7 @@ YELLOW = (255,255,0)
 def main():
 	cam = SimpleCV.Camera(prop_set={'width':WIDTH, 'height':HEIGHT})
 	i = 0
+	buzzer_init()
 	while(i<20000): 
 		img = capture_image(cam)
 		size = get_size()
@@ -35,15 +36,20 @@ def main():
 		if(tarps):
 			for idx, blobs in enumerate(tarps):
 				if(blobs!=0):
-					rects = find_rects(blobs,0.1)
+					rects = find_rects(blobs,RECT_TOLERANCE)
 					color = (0,0,0)
 					if(idx==0): color = BLUE
 					elif(idx==1): color = RED
 					elif(idx==2): color = YELLOW
 					draw_blobs(img,rects,color)
-			save_image(img,with_dl=False)
+			save_image(img,with_dl=True)
 			write_log(t)
 		
+# Function to start buzzer
+def buzzer_init():
+	##TODO: write function
+	return 0
+
 # Function to capture image from camera
 def capture_image(cam):
 	img = cam.getImage()
