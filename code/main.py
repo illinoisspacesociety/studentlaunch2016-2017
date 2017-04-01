@@ -4,19 +4,20 @@
 from SimpleCV import *
 from datetime import datetime
 import time
+import math # need this for square root and power in custom color_check_helper function
 
 # Constants
 WIDTH = 1280
 HEIGHT = 720
 RECT_TOLERANCE = 0.2
-COLOR_TOLERANCE = 1
+COLOR_TOLERANCE = 1 #I think this will have to be higher
 #DIRECTORY = "/home/pi/images/"
 DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "image_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "/home/pi/studentlaunch2016-2017/code/log"
 DL = True
-BLUE = (0,0,255)
+BLUE = (0,0,255)    # These should be updated with the actual RGB values
 RED = (255,0,0)
 YELLOW = (255,255,0)
 
@@ -66,7 +67,8 @@ def get_size():
 	return False
 
 def find_tarps(img):
-	tarps = [color_check(img,RED), color_check(img,BLUE), color_check(img,YELLOW)]
+    #tarps = [color_check(img,RED), color_check(img,BLUE), color_check(img,YELLOW)]
+    terps = color_check_helper()
 	return tarps
 	
 # Function that returns blobs of a certain RGB color from an image
@@ -77,6 +79,27 @@ def color_check(img, color):
 	if blobs:
 		return blobs
 	else: return 0
+
+# An attempt to speed up the tarp-finding algorithm
+#supposed to replace color_check if it works
+def color_check_helper(img, color1, color2, color3):    #this new function takes in all 3 colors and the tolerance
+    imgcopy = img.copy()
+    for x in img.size()[0]: #iterate int x across the width
+        for y in img.size()[1]: #iterate int y across the height
+            RGB = img[x, y] #RGB is of type integer tuple with 3 values
+            distance1 = math.sqrt(math.pow(RGB[0] - color1[0], 2) + math.pow(RGB[1] - color1[1], 2) + math.pow(RGB[2] - color1[2], 2)) <= COLOR_TOLERANCE
+            distance2 = math.sqrt(math.pow(RGB[0] - color2[0], 2) + math.pow(RGB[1] - color2[1], 2) + math.pow(RGB[2] - color2[2], 2)) <= COLOR_TOLERANCE
+            distance3 = math.sqrt(math.pow(RGB[0] - color3[0], 2) + math.pow(RGB[1] - color3[1], 2) + math.pow(RGB[2] - color3[2], 2)) <= COLOR_TOLERANCE
+            if distance1 or distance2 or distance3:
+                imgcopy[x, y] = (255, 255, 255)   #pixels within tarp tolerance are changed to pure white
+            else:
+                imgcopy[x, y] = (0, 0, 0)   #pixels out of any color range are colored pure black
+    save_test_image(imgcopy, "withColorCheckHelper"):    #to check to see if it worked in testing
+    blobs = img.findBlobsFromMask(imgcopy)
+    if blobs:
+        return blobs
+    else:
+        return 0
 
 # Function to find rectanges in blobs
 def find_rects(blobs, tol=RECT_TOLERANCE):
