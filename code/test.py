@@ -18,7 +18,9 @@ test_blob_on_edge = 0
 test_binarize = 0
 test_color_distance = 0
 test_color_distance2 = 0
-test_new_main = 1
+test_new_main = 0
+test_color_check_helper = 1
+test_color_access = 0
 test_i2c = 0
 
 # Show rectangles in pic
@@ -366,6 +368,38 @@ if(test_new_main):
 			save_test_image(img,"tol="+str(tol))
 		print tol
 		
+if(test_color_check_helper):
+	i = 0
+	while(i<255):
+		img = Image("test_images/test19.png")
+		img2 = color_check_helper(img,RED,YELLOW,BLUE,i)
+		save_test_image(img2,"color_check_helper_"+str(i))
+		i += 5
+		print i
+		
+if(test_color_access):
+	img = Image("test_images/test19.png")
+	img2 = img.copy()
+	rgb = img[0,0]
+	print rgb
+	color1 = RED
+	color2 = BLUE
+	color3 = YELLOW
+	i = 0
+	j = 0
+	print img.size()[0]
+	distance1 = math.sqrt(math.pow(rgb[0] - color1[0], 2) + math.pow(rgb[1] - color1[1], 2) + math.pow(rgb[2] - color1[2], 2)) <= COLOR_TOLERANCE
+	while(i<img.size()[0]):
+		j = 0
+		while(j<img.size()[1]):
+			img2[i,j] = (0,0,0)
+			#print j
+			j += 1
+		i += 1
+		print i
+	print img2[0,0]
+	save_test_image(img2,"test")
+
 if(test_i2c):
 	bus = SMBus(1)
 	address = 0x76
