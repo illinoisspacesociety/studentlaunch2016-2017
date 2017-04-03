@@ -332,7 +332,7 @@ if(test_color_distance2):
 		
 if(test_new_main):
 	i = 0
-	while(i<200): 
+	while(i<1): 
 		img = Image("test_images/test19.png")
 		size = get_size()
 		#rects = find_rects(img)
@@ -346,10 +346,23 @@ if(test_new_main):
 					tol = float(i)/1000
 					rects = find_rects(blobs,tol)
 					color = (0,0,0)
-					if(idx==0): color = RED
-					elif(idx==1): color = BLUE
-					elif(idx==2): color = YELLOW
-					if(rects): draw_blobs(img,rects,color)
+					if(idx==0): 
+						color = RED
+						print "RED COLORS"
+						for blob in blobs:
+							print blob.meanColor()
+					elif(idx==1):
+						color = BLUE
+						print "BLUE COLORS"
+						for blob in blobs:
+							print blob.meanColor()
+					elif(idx==2): 
+						color = YELLOW
+						print "YELLOW COLORS"
+						for blob in blobs:
+							print blob.meanColor()
+					#if(rects): draw_blobs(img,blobs,color)
+					draw_blobs(img,blobs,color)
 			save_test_image(img,"tol="+str(tol))
 		print tol
 		
