@@ -15,8 +15,8 @@ HEIGHT = 720
 RECT_TOLERANCE = 0.3
 BIN_TOLERANCE = 130
 SIZE_TOLERANCE = 0.10
-SIZE_MAX = (720.0/4)*(720.0/4)
-SIZE_MIN = (720.0/8)*(720.0/8)
+SIZE_MAX = 40000
+SIZE_MIN = 100
 COLOR_TOLERANCE = 1 #I think this will have to be higher
 DIRECTORY = "/home/pi/images/"
 #DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
@@ -40,9 +40,10 @@ def main():
 			cam = SimpleCV.Camera(prop_set={'width':WIDTH, 'height':HEIGHT})
 			write_log(t+", Camera initiated")
 			break
-		else:
+		except:
 			write_log(t+", Could not access camera")
 			time.sleep(0.5)
+			pass
 	i = 0
 	buzzer = buzzer_init()
 	write_log(t+", Buzzer initiated")
@@ -52,11 +53,11 @@ def main():
 		tarps = find_tarps(img)
 		i += 1
 		t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
-		if(tarps):
+		if(tarps[0]!=0 or tarps[1]!=0 or tarps[2]!=0):
 			for idx, blobs in enumerate(tarps):
 				if(blobs!=0):
 					size = filter_size(blobs)
-					rects = find_rects(size)
+					rects = filter_rects(size)
 					color = (0,0,0)
 					if(idx==0): color = RED
 					elif(idx==1): color = BLUE
