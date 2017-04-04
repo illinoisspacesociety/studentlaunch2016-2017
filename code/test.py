@@ -18,10 +18,20 @@ test_blob_on_edge = 0
 test_binarize = 0
 test_color_distance = 0
 test_color_distance2 = 0
-test_new_main = 0
-test_color_check_helper = 1
+test_new_main = 1
+test_color_check_helper = 0
 test_color_access = 0
 test_i2c = 0
+
+class bcolors:
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
+	BOLD = '\033[1m'
+	UNDERLINE = '\033[4m'
 
 # Show rectangles in pic
 if(test_rect):
@@ -287,55 +297,72 @@ if(test_color_distance):
 '''
 
 if(test_color_distance2):
-	blue = (0,0,255)
-	red = (255,0,0)
-	yellow = (255,255,0)
-	
+	print "COLOR DISTANCE 2"
 	i = 0
-	while(i<100):
-		t1 = datetime.now()
-		img = Image("test_images/test19.png")		
-		img1 = img
-
-		color = img.colorDistance(blue)
-		save_test_image(color,"blue_search")
-		save_test_image(color,"blue_inverse_"+str(i))
-		bina = color.binarize(140)
-		save_test_image(bina,"blue_bin_"+str(i))
-		blobs = img.findBlobsFromMask(bina)
-		if blobs:
-			draw_blobs(img,blobs)
-			
-		color = img.colorDistance(red)
-		save_test_image(color,"red_search")
-		save_test_image(color,"red_inverse_"+str(i))
-		bina = color.binarize(140)
-		save_test_image(bina,"red_bin_"+str(i))
-		blobs = img.findBlobsFromMask(bina)
-		if blobs:
-			draw_blobs(img,blobs)
-			
-		color = img.colorDistance(yellow)
-		save_test_image(color,"yellow_search")
-		save_test_image(color,"yellow_inverse_"+str(i))
-		bina = color.binarize(140)
-		save_test_image(bina,"yellow_bin_"+str(i))
-		blobs = img.findBlobsFromMask(bina)
-		if blobs:
-			draw_blobs(img,blobs)
+	j = 6
+	while(j<22):
+		i = 0
+		j += 1
+		print bcolors.OKGREEN + "STARTING PIC: " + str(j) + bcolors.ENDC
+		while(i<255):
+			tarps = [0,0,0]
+			t1 = datetime.now()
+			img = Image("test_images/live_tests/"+str(j)+".png")		
+			imgB = img.copy()
+			imgR = img.copy()
+			imgY = img.copy()
 		
-		save_test_image(img,"blobs")
-		t2 = datetime.now()
-		dt = t2 - t1
-		t = str(dt.seconds*1000000 + dt.microseconds)
-		print t
-		write_log(t)
-		i += 1
+			color = img.colorDistance(BLUE)
+			save_test_image(color,"/blue/"+str(j)+"_blue_search")
+			#inv = color.invert()
+			#save_test_image(inv,str(j)+"_blue_inverse_")
+			bina = color.binarize(i)
+			save_test_image(bina,"/blue/bin/"+str(j)+"_blue_bin_"+str(i))
+			tarps[0] = imgB.findBlobsFromMask(bina)
+			draw_blobs(imgB,tarps[0],BLUE)
+			save_test_image(imgB,"/blue/blobs/"+str(j)+"_blue_blobs_"+str(i))
+			
+			color = img.colorDistance(RED)
+			save_test_image(color,"/red/"+str(j)+"_red_search")
+			#inv = color.invert()
+			#save_test_image(inv,str(j)+"_red_inverse_")
+			bina = color.binarize(i)
+			save_test_image(bina,"/red/bin/"+str(j)+"_red_bin_"+str(i))
+			tarps[1] = imgR.findBlobsFromMask(bina)
+			draw_blobs(imgR,tarps[1],RED)
+			save_test_image(imgR,"/red/blobs/"+str(j)+"_red_blobs_"+str(i))
+			
+			color = img.colorDistance(YELLOW)
+			save_test_image(color,"/yellow/"+str(j)+"_yellow_search")
+			#inv = color.invert()
+			#save_test_image(inv,str(j)+"_yellow_inverse_")
+			bina = color.binarize(i)
+			save_test_image(bina,"/yellow/bin/"+str(j)+"_yellow_bin_"+str(i))
+			tarps[2] = imgY.findBlobsFromMask(bina)
+			draw_blobs(imgY,tarps[2],YELLOW)
+			save_test_image(imgY,"/yellow/blobs/"+str(j)+"_yellow_blobs_"+str(i))
+			
+			if(tarps):
+				for idx, blobs in enumerate(tarps):
+					if(blobs!=0):
+						rects = find_rects(blobs,RECT_TOLERANCE)
+						color = (0,0,0)
+						if(idx==0): color = BLUE
+						elif(idx==1): color = RED
+						elif(idx==2): color = YELLOW
+						draw_blobs(img,rects,color)
+			save_test_image(img,"/blobs/"+str(j)+"_blobs_"+str(i))
+			t2 = datetime.now()
+			dt = t2 - t1
+			t = str(dt.seconds*1000000 + dt.microseconds)
+			print str(i)+": "+str(t)
+			#write_log(t)
+			i += 10
 		
 if(test_new_main):
 	i = 0
-	while(i<1): 
-		img = Image("test_images/test19.png")
+	while(i<21): 
+		img = Image("test_images/live_tests/"+str(i+1)+".png")
 		size = get_size()
 		#rects = find_rects(img)
 		tarps = find_tarps(img)
@@ -345,28 +372,16 @@ if(test_new_main):
 		if(tarps):
 			for idx, blobs in enumerate(tarps):
 				if(blobs!=0):
-					tol = float(i)/1000
-					rects = find_rects(blobs,tol)
+					size = filter_size(blobs)
+					rects = find_rects(size)
 					color = (0,0,0)
-					if(idx==0): 
-						color = RED
-						print "RED COLORS"
-						for blob in blobs:
-							print blob.meanColor()
-					elif(idx==1):
-						color = BLUE
-						print "BLUE COLORS"
-						for blob in blobs:
-							print blob.meanColor()
-					elif(idx==2): 
-						color = YELLOW
-						print "YELLOW COLORS"
-						for blob in blobs:
-							print blob.meanColor()
+					if(idx==0): color = RED
+					elif(idx==1): color = BLUE
+					elif(idx==2): color = YELLOW
 					#if(rects): draw_blobs(img,blobs,color)
-					draw_blobs(img,blobs,color)
-			save_test_image(img,"tol="+str(tol))
-		print tol
+					draw_blobs(img,rects,color)
+			save_test_image(img,"pic_"+str(i))
+			print i
 		
 if(test_color_check_helper):
 	i = 0
@@ -397,7 +412,7 @@ if(test_color_access):
 			j += 1
 		i += 1
 		print i
-	print img2[0,0]
+	print img2[0,0] 
 	save_test_image(img2,"test")
 
 if(test_i2c):
