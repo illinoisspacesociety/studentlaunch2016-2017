@@ -1,1 +1,3 @@
 We might want to put our PI's respective IP addresses here so we can SSH into them from our own computers
+Min = 100 (58)
+Max = 4*10^6 (4.326e+06)
