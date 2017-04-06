@@ -34,10 +34,13 @@ BUZZER_PIN = 4
 
 # Main function
 def main():
+	t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
+	write_log("\n"+t+", Starting Code\n")
 	while(1):
 		t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
 		try:
 			cam = SimpleCV.Camera(prop_set={'width':WIDTH, 'height':HEIGHT})
+			img = capture_image(cam)
 			write_log(t+", Camera initiated")
 			break
 		except:
