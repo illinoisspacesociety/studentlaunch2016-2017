@@ -17,8 +17,8 @@ test_edges = 0
 test_blob_on_edge = 0
 test_binarize = 0
 test_color_distance = 0
-test_color_distance2 = 0
-test_new_main = 1
+test_color_distance2 = 1
+test_new_main = 0
 test_color_check_helper = 0
 test_color_access = 0
 test_i2c = 0
@@ -38,7 +38,7 @@ if(test_rect):
 	#cam = SimpleCV.Camera()
 	#img = capture_image(cam)
 	img = Image("test_images/test11.png")
-	rects = find_rects(img, 0.4)
+	rects = filter_rects(img, 0.4)
 	for rect in rects:
 		rect.drawOutline((128,0,0),-1,4)
 	save_image(img)
@@ -54,7 +54,7 @@ if(test_blob_time):
 	while(i<100):
 		t1 = datetime.now()
 		img = capture_image(cam)
-		rects = find_rects(img, float(i)/100)
+		rects = filter_rects(img, float(i)/100)
 		i += 1
 		for rect in rects:
 			rect.drawOutline((128,0,0),-1,4)
@@ -72,7 +72,7 @@ if(test_tolerances):
 	i = 0
 	while(i<100):
 		img = Image("test_images/test11.png")
-		rects = find_rects(img, float(i)/100)
+		rects = filter_rects(img, float(i)/100)
 		for rect in rects:
 			rect.drawOutline((128,0,0),-1,4)
 		save_image(img)
@@ -124,7 +124,7 @@ if(test_pic_time_max):
 #Prints the colors of blobs in a pic
 if(test_blob_colors):
 	img = Image("test_images/test11.png")
-	rects = find_rects(img)
+	rects = filter_rects(img)
 	for rect in rects:
 		print rect.meanColor()
 		print check_color2(rect,(100,100,100))
@@ -136,7 +136,7 @@ if(test_color_matching):
 if(test_drawing_layer):
 	img = Image("test_images/test2.png")
 	dl = img.dl()
-	rects = find_rects(img)
+	rects = filter_rects(img)
 	for rect in rects:
 		rect.drawOutline(color=(128,0,0),width=4,layer=dl)
 	img.save("/home/asa/Documents/StudentLaunch/wdl.png")
@@ -150,7 +150,7 @@ if(test_color_video):
 	cam = SimpleCV.Camera(prop_set={'width':width, 'height':height})
 	while(1):
 		img = capture_image(cam)
-		rects = find_rects(img)
+		rects = filter_rects(img)
 		for rect in rects:
 			if(check_color(rect,(0,0,255))):
 				rect.drawOutline((128,0,0),-1,4)
@@ -300,14 +300,14 @@ if(test_color_distance2):
 	print "COLOR DISTANCE 2"
 	i = 0
 	j = 6
-	while(j<22):
-		i = 0
+	while(j<7):
+		i = 80
 		j += 1
 		print bcolors.OKGREEN + "STARTING PIC: " + str(j) + bcolors.ENDC
-		while(i<255):
+		while(i<120):
 			tarps = [0,0,0]
 			t1 = datetime.now()
-			img = Image("test_images/live_tests/"+str(j)+".png")		
+			img = Image("test_images/live_tests/31.png")		
 			imgB = img.copy()
 			imgR = img.copy()
 			imgY = img.copy()
@@ -345,7 +345,7 @@ if(test_color_distance2):
 			if(tarps):
 				for idx, blobs in enumerate(tarps):
 					if(blobs!=0):
-						rects = find_rects(blobs,RECT_TOLERANCE)
+						rects = filter_rects(blobs,RECT_TOLERANCE)
 						color = (0,0,0)
 						if(idx==0): color = BLUE
 						elif(idx==1): color = RED
@@ -357,12 +357,12 @@ if(test_color_distance2):
 			t = str(dt.seconds*1000000 + dt.microseconds)
 			print str(i)+": "+str(t)
 			#write_log(t)
-			i += 10
+			i += 2
 		
 if(test_new_main):
 	i = 0
-	while(i<21): 
-		img = Image("test_images/live_tests/"+str(i+1)+".png")
+	while(i<1): 
+		img = Image("test_images/live_tests/31.png")
 		size = get_size()
 		#rects = find_rects(img)
 		tarps = find_tarps(img)
@@ -372,14 +372,14 @@ if(test_new_main):
 		if(tarps):
 			for idx, blobs in enumerate(tarps):
 				if(blobs!=0):
-					size = filter_size(blobs)
-					rects = find_rects(size)
+					#size = filter_size(blobs)
+					#rects = filter_rects(size)
 					color = (0,0,0)
 					if(idx==0): color = RED
 					elif(idx==1): color = BLUE
 					elif(idx==2): color = YELLOW
 					#if(rects): draw_blobs(img,blobs,color)
-					draw_blobs(img,rects,color)
+					draw_blobs(img,blobs,color)
 			save_test_image(img,"pic_"+str(i))
 			print i
 		
