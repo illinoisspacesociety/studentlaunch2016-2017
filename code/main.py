@@ -6,27 +6,27 @@
 from SimpleCV import *
 from datetime import datetime
 import time
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 import math # need this for square root and power in custom color_check_helper function
 
 # Constants
 WIDTH = 1280
 HEIGHT = 720
-RECT_TOLERANCE = 0.4
+RECT_TOLERANCE = 0.3
 BIN_TOLERANCE = 140
 SIZE_TOLERANCE = 0.10
 SIZE_MAX = 40000
 SIZE_MIN = 100
 COLOR_TOLERANCE = 1 #I think this will have to be higher
-#DIRECTORY = "/home/pi/images/"
-DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
+DIRECTORY = "/home/pi/images/"
+#DIRECTORY = "/home/asa/Documents/StudentLaunch/images/"
 IMAGE_NAME = "tarps_"
 IMAGE_TYPE = ".png"
 LOG_FILE = "/home/pi/studentlaunch2016-2017/code/log"
 DL = True
 #BLUE = (0,32,91)
 #RED = (166,9,61)
-#YELLOW = (255,209,0)
+#YELLOW = (255,209 ,0)
 BLUE = (0,0,255)    # These should be updated with the actual RGB values
 RED = (255,0,0)
 YELLOW = (255,255,0)
@@ -52,7 +52,7 @@ def main():
 	write_log(t+", Buzzer initiated")
 	while(i<20000): 
 		img = capture_image(cam)
-		size = get_size()
+		#size = get_size()
 		tarps = find_tarps(img)
 		i += 1
 		t = datetime.now().strftime("%Y%m%d_%H%M%S%f")
@@ -66,9 +66,9 @@ def main():
 					elif(idx==1): color = BLUE
 					elif(idx==2): color = YELLOW
 					draw_blobs(img,rects,color)
-			save_image(img,t)
 		else:
 			write_log(t+", No tarps found")
+		save_image(img,t)
 	buzzer.stop()
 	GPIO.cleanup()
 

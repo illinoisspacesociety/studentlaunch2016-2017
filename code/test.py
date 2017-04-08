@@ -17,8 +17,8 @@ test_edges = 0
 test_blob_on_edge = 0
 test_binarize = 0
 test_color_distance = 0
-test_color_distance2 = 1
-test_new_main = 0
+test_color_distance2 = 0
+test_new_main = 1
 test_color_check_helper = 0
 test_color_access = 0
 test_i2c = 0
@@ -360,9 +360,9 @@ if(test_color_distance2):
 			i += 2
 		
 if(test_new_main):
-	i = 0
-	while(i<1): 
-		img = Image("test_images/live_tests/31.png")
+	i = 30
+	while(i<32): 
+		img = Image("test_images/live_tests/"+str(i)+".png")
 		size = get_size()
 		#rects = find_rects(img)
 		tarps = find_tarps(img)
